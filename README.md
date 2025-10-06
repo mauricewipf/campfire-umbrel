@@ -43,6 +43,48 @@ For example:
       --env TLS_DOMAIN=chat.example.com \
       campfire
 
+## Running locally with Docker Compose
+
+For local testing with Docker Compose (useful for testing the Umbrel setup):
+
+1. **Generate environment variables:**
+
+        # Generate a random secret key
+        openssl rand -hex 64
+
+2. **Create `.env.local` file:**
+
+        SECRET_KEY_BASE=<paste_your_generated_key>
+        VAPID_PUBLIC_KEY=
+        VAPID_PRIVATE_KEY=
+
+3. **Create data directories:**
+
+        mkdir -p local-data/storage local-data/redis
+
+4. **Build and start:**
+
+        docker-compose -f docker-compose.local.yml --env-file .env.local up --build
+
+5. **Access Campfire at http://localhost**
+
+**Access from other devices on your network:**
+
+To access from your phone, tablet, or other computers on the same WiFi:
+
+    # Find your Mac's IP address
+    ipconfig getifaddr en0
+
+Then visit `http://YOUR_IP_ADDRESS` from any device on your network (e.g., `http://192.168.1.123`).
+
+Your data (database, uploaded files) will be persisted in the `local-data/` directory. When you stop and restart the containers, all your data will still be there.
+
+**Useful commands:**
+
+- Stop containers: `Ctrl+C` or `docker-compose -f docker-compose.local.yml down`
+- View logs: `docker-compose -f docker-compose.local.yml logs -f`
+- Reset all data: `rm -rf local-data/` (then recreate directories)
+
 ## Running in development
 
     bin/setup

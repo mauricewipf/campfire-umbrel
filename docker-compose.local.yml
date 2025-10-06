@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_VERSION: "1.0.0"
+        GIT_REVISION: "local"
+        OCI_DESCRIPTION: "Campfire - Self-hosted chat application"
+        OCI_SOURCE: "https://github.com/mauricewipf/campfire-umbrel"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./local-data/storage:/rails/storage
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      REDIS_URL: redis://redis:6379
+      DISABLE_SSL: 'true'
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+    depends_on:
+      - redis
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/up" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1'
+        reservations:
+          memory: 2G
+          cpus: '1'
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - ./local-data/redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    restart: unless-stopped
