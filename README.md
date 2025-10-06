@@ -31,7 +31,7 @@ To configure additional features, you can set the following environment variable
 
 For example:
 
-    docker build -t campfire .
+    docker build -t campfire-umbrel:latest -t campfire-umbrel:0.1.0 --build-arg GIT_REVISION=$(git rev-parse --short HEAD) --build-arg APP_VERSION=0.1.0 .
 
     docker run \
       --publish 80:80 --publish 443:443 \
@@ -41,7 +41,34 @@ For example:
       --env VAPID_PUBLIC_KEY=$YOUR_PUBLIC_KEY \
       --env VAPID_PRIVATE_KEY=$YOUR_PRIVATE_KEY \
       --env TLS_DOMAIN=chat.example.com \
-      campfire
+      campfire-umbrel:latest
+
+## Publishing to Docker Hub
+
+To publish your Docker image to Docker Hub:
+
+1. **Log in to Docker Hub:**
+
+        docker login
+
+2. **Build and tag with your Docker Hub username:**
+
+        docker build \
+          -t YOUR_DOCKERHUB_USERNAME/campfire-umbrel:latest \
+          -t YOUR_DOCKERHUB_USERNAME/campfire-umbrel:0.1.0 \
+          --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
+          --build-arg APP_VERSION=0.1.0 \
+          .
+
+3. **Push all tags:**
+
+        docker push YOUR_DOCKERHUB_USERNAME/campfire-umbrel --all-tags
+
+Your image will be available at `https://hub.docker.com/r/YOUR_DOCKERHUB_USERNAME/campfire-umbrel`
+
+Others can then pull and use your image:
+
+    docker pull YOUR_DOCKERHUB_USERNAME/campfire-umbrel:latest
 
 ## Running locally with Docker Compose
 
