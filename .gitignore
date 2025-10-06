@@ -34,11 +34,13 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# Ignore production envs
-/.env
+# Ignore envs
+/.env*
 
 # Ignore dartsass builds
 app/assets/builds/*
 
 # Ignore our exported zipfiles
 /*.zip
+
+/local-data
