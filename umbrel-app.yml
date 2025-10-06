@@ -49,7 +49,11 @@ dependencies: []
 repo: https://github.com/basecamp/campfire
 support: https://github.com/basecamp/campfire/issues
 port: 80
-gallery: []
+gallery: [
+  - assets/campfire-01.jpeg
+  - assets/campfire-02.jpeg
+  - assets/campfire-03.jpeg
+]
 path: ""
 defaultUsername: ""
 defaultPassword: ""
