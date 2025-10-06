@@ -30,6 +30,12 @@ services:
       SENTRY_DSN: ${SENTRY_DSN:-}
     depends_on:
       - redis
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/up" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: on-failure
     container_name: campfire_server_1
 
@@ -38,5 +44,10 @@ services:
     command: redis-server --save 60 1 --loglevel warning
     volumes:
       - ${APP_DATA_DIR}/data/redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     restart: on-failure
     container_name: campfire_redis_1

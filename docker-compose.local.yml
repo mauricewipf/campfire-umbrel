@@ -24,6 +24,12 @@ services:
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
     depends_on:
       - redis
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/up" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
 
   redis:
@@ -31,4 +37,9 @@ services:
     command: redis-server --save 60 1 --loglevel warning
     volumes:
       - ./local-data/redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     restart: unless-stopped
