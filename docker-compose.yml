@@ -36,6 +36,15 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    deploy:
+      # https://once.com/campfire#requirements
+      resources:
+        limits:
+          memory: 8G # 64G for up to 10,000 users
+          cpus: '4' # 32 for up to 10,000 users
+        reservations:
+          memory: 2G
+          cpus: '1'
     restart: on-failure
     container_name: campfire_server_1
 
@@ -49,5 +58,13 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
     restart: on-failure
     container_name: campfire_redis_1
