@@ -53,22 +53,25 @@ To publish your Docker image to Docker Hub:
 
 2. **Build and tag with your Docker Hub username:**
 
-        docker build \
-          -t YOUR_DOCKERHUB_USERNAME/campfire-umbrel:latest \
-          -t YOUR_DOCKERHUB_USERNAME/campfire-umbrel:0.1.0 \
+        docker buildx create --use
+
+        docker buildx build \
+          --platform linux/amd64,linux/arm64 \
+          -t mauricewipf/campfire-umbrel:latest \
+          -t mauricewipf/campfire-umbrel:0.1.0 \
           --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
           --build-arg APP_VERSION=0.1.0 \
           .
 
 3. **Push all tags:**
 
-        docker push YOUR_DOCKERHUB_USERNAME/campfire-umbrel --all-tags
+        docker push mauricewipf/campfire-umbrel --all-tags
 
-Your image will be available at `https://hub.docker.com/r/YOUR_DOCKERHUB_USERNAME/campfire-umbrel`
+Your image will be available at `https://hub.docker.com/r/mauricewipf/campfire-umbrel`
 
 Others can then pull and use your image:
 
-    docker pull YOUR_DOCKERHUB_USERNAME/campfire-umbrel:latest
+    docker pull mauricewipf/campfire-umbrel:latest
 
 ## Running locally with Docker Compose
 
