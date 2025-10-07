@@ -1,9 +1,10 @@
-manifestVersion: 1.1
-id: campfire
-category: social
+manifestVersion: 1
+id: mauwi-campfire
 name: Campfire
-version: "1.0.0"
 tagline: Self-hosted chat for teams
+icon: https://raw.githubusercontent.com/mauricewipf/campfire-umbrel/refs/heads/main/assets/logo-campfire.png
+category: social
+version: "0.1.0"
 description: >-
   Campfire is a web-based chat application for teams. Run your own private chat server with all the features you need.
 
@@ -43,17 +44,16 @@ releaseNotes: >-
   - Search and notifications
 
   - Bot API support
-developer: Basecamp
-website: https://github.com/basecamp/campfire
+developer: Maurice Wipf
+website: https://github.com/mauricewipf/campfire-umbrel
 dependencies: []
-repo: https://github.com/basecamp/campfire
-support: https://github.com/basecamp/campfire/issues
-port: 80
-gallery: [
-  - assets/campfire-01.jpeg
-  - assets/campfire-02.jpeg
-  - assets/campfire-03.jpeg
-]
+repo: https://github.com/mauricewipf/campfire-umbrel
+support: https://github.com/mauricewipf/campfire-umbrel/issues
+port: 8001
+gallery:
+  - https://raw.githubusercontent.com/mauricewipf/campfire-umbrel/refs/heads/main/assets/campfire-01.jpeg
+  - https://raw.githubusercontent.com/mauricewipf/campfire-umbrel/refs/heads/main/assets/campfire-02.jpeg
+  - https://raw.githubusercontent.com/mauricewipf/campfire-umbrel/refs/heads/main/assets/campfire-03.jpeg
 path: ""
 defaultUsername: ""
 defaultPassword: ""
