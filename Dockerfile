@@ -52,10 +52,9 @@ ARG OCI_SOURCE
 LABEL org.opencontainers.image.source="${OCI_SOURCE}"
 LABEL org.opencontainers.image.licenses="MIT"
 
-# Run and own only the runtime files as a non-root user for security
+# Create rails user for running the application
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
-USER 1000:1000
 
 # Configure environment defaults
 ENV HTTP_IDLE_TIMEOUT=60
@@ -66,6 +65,11 @@ ENV HTTP_WRITE_TIMEOUT=300
 COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
 COPY --from=build --chown=rails:rails /rails /rails
 
+# Pre-create storage directories with correct ownership
+# When volume is mounted empty, Docker will preserve these with proper permissions
+RUN mkdir -p /rails/storage/db /rails/storage/files && \
+    chown -R 1000:1000 /rails/storage
+
 # Set version and revision
 ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
@@ -74,6 +78,13 @@ ENV GIT_REVISION=$GIT_REVISION
 
 # Expose ports for HTTP and HTTPS
 EXPOSE 80 443
+
+# Add entrypoint to handle Umbrel volume permissions
+COPY --chmod=755 bin/docker-entrypoint /usr/local/bin/docker-entrypoint
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
+
+# Note: Container starts as root to fix volume permissions
+# The entrypoint will drop to user 1000:1000 after fixing permissions
 
 # Start the server by default, this can be overwritten at runtime
 CMD ["bin/boot"]
