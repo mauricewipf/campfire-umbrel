@@ -1,5 +1,8 @@
-# Campfire
+# Campfire Umbrel
 
+Find the Umbrel App Yamls here: https://github.com/mauricewipf/umbrel-app-store/tree/main/mauwi-campfire
+
+## Features
 Campfire is a web-based chat application. It supports many of the features you'd
 expect, including:
 
