@@ -94,4 +94,5 @@ Rails.application.routes.draw do
   get "service-worker" => "pwa#service_worker"
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get "api/widget/up" => "api/widget/health_checks#show", as: :api_widget_health_check
 end
