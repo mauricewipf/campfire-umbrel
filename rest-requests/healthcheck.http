@@ -1,0 +1,29 @@
+### Healthcheck Endpoint - Local HTTP
+GET http://localhost/up
+
+###
+
+### Healthcheck Endpoint - Local HTTPS
+GET https://localhost/up
+
+###
+
+### Healthcheck Endpoint - With verbose output
+GET http://localhost/up
+Accept: application/json
+
+###
+
+### API Widget Healthcheck Endpoint - Local HTTP
+# Returns JSON with custom format:
+# Success (200): {"type":"text-with-progress","refresh":"","link":"","title":"Campfire Healthcheck","text":"Healthy","progressLabel":"200 OK","progress":1}
+# Error (500): {"type":"text-with-progress","refresh":"","link":"","title":"Campfire Healthcheck","text":"Unhealthy","progressLabel":"500 Error","progress":0}
+# Error (503): {"type":"text-with-progress","refresh":"","link":"","title":"Campfire Healthcheck","text":"Unhealthy","progressLabel":"503 Error","progress":0}
+GET http://localhost/api/widget/up
+
+###
+
+### API Widget Healthcheck Endpoint - Local HTTPS
+GET https://localhost/api/widget/up
+
+###

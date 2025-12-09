@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+# Ensure storage directories exist with correct ownership
+# This handles the case where Umbrel mounts an empty or root-owned volume
+if [ -d "/rails/storage" ]; then
+    mkdir -p /rails/storage/db /rails/storage/files
+    
+    # Fix ownership to match Umbrel's user (1000:1000)
+    chown -R 1000:1000 /rails/storage
+    
+    # Execute the command as the rails user
+    exec su -s /bin/bash -c "exec $*" rails
+fi
+
+# Fallback: just execute the command
+exec "$@"

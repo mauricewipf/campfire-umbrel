@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   resources :users, only: :show do
     scope module: "users" do
       resource :avatar, only: %i[ show destroy ]
+      resource :ban, only: %i[ create destroy ]
 
       scope defaults: { user_id: "me" } do
         resource :sidebar, only: :show
@@ -94,4 +95,5 @@ Rails.application.routes.draw do
   get "service-worker" => "pwa#service_worker"
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get "api/widget/up" => "api/widget/health_checks#show", as: :api_widget_health_check
 end

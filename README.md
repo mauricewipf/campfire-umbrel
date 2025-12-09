@@ -1,5 +1,8 @@
-# Campfire
+# Campfire Umbrel
 
+Find the Umbrel App Yamls here: https://github.com/mauricewipf/umbrel-app-store/tree/main/mauwi-campfire
+
+## Features
 Campfire is a web-based chat application. It supports many of the features you'd
 expect, including:
 
@@ -31,7 +34,7 @@ To configure additional features, you can set the following environment variable
 
 For example:
 
-    docker build -t campfire .
+    docker build -t campfire-umbrel:latest -t campfire-umbrel:0.1.0 --build-arg GIT_REVISION=$(git rev-parse --short HEAD) --build-arg APP_VERSION=0.1.0 .
 
     docker run \
       --publish 80:80 --publish 443:443 \
@@ -41,7 +44,34 @@ For example:
       --env VAPID_PUBLIC_KEY=$YOUR_PUBLIC_KEY \
       --env VAPID_PRIVATE_KEY=$YOUR_PRIVATE_KEY \
       --env TLS_DOMAIN=chat.example.com \
-      campfire
+      campfire-umbrel:latest
+
+## Publishing to Docker Hub
+
+To publish your Docker image to Docker Hub:
+
+1. **Log in to Docker Hub:**
+
+        docker login
+
+2. **Build, tag and push with your Docker Hub username:**
+
+        # Use BuildKit for multi-arch builds
+        docker buildx create --use
+
+        docker buildx build \
+          --platform linux/amd64,linux/arm64 \
+          -t mauricewipf/campfire-umbrel:latest \
+          -t mauricewipf/campfire-umbrel:0.1.0 \
+          --build-arg GIT_REVISION=$(git rev-parse --short HEAD) \
+          --build-arg APP_VERSION=0.1.0 \
+          --push \
+          --provenance=false \
+          .
+
+Others can then pull and use your image:
+
+    docker pull mauricewipf/campfire-umbrel:latest
 
 ## Running locally with Docker Compose
 
